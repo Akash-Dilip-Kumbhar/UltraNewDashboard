@@ -1,0 +1,1327 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>@Convert.ToString(Session["CompanyName"]) | @ViewBag.FormName</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+
+    <!-- ================== BEGIN core-css ================== -->
+    <link href="/ColorAssets/css/default/app.min.css" rel="stylesheet" />
+    <link href="/ColorAssets/css/vendor.min.css" rel="stylesheet" />
+    <!-- ================== END core-css ================== -->
+    <!-- ================== BEGIN page-css ================== -->
+    <link href="/ColorAssets/plugins/jvectormap-next/jquery-jvectormap.css" rel="stylesheet" />
+    <link href="/ColorAssets/plugins/bootstrap-datepicker/dist/css/bootstrap-datepicker.css" rel="stylesheet" />
+    <link href="/ColorAssets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+    <!-- ================== END page-css ================== -->
+
+    <!-- required files -->
+    <!-- ================== BEGIN page-css ================== -->
+    <link href="/ColorAssets/plugins/datatables.net-bs5/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
+    <link href="/ColorAssets/plugins/datatables.net-responsive-bs5/css/responsive.bootstrap5.min.css"
+        rel="stylesheet" />
+    <link href="/ColorAssets/plugins/datatables.net-fixedheader-bs5/css/fixedHeader.bootstrap5.min.css"
+        rel="stylesheet" />
+    <!-- ================== END page-css ================== -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.12/dist/sweetalert2.all.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.12/dist/sweetalert2.min.css" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        body.swal2-shown>[aria-hidden="true"] {
+            filter: blur(2px);
+        }
+
+        .btnpress:focus-visible {
+            outline: 0 !important;
+        }
+
+        .btnpress:active {
+            transform: translateY(4px);
+            color: #fff;
+        }
+
+        .BtnBx {
+            display: flex;
+            justify-content: end;
+        }
+
+        .BtnBx .btn {
+            margin: 5px 3px;
+            font-size: 12px;
+        }
+
+        .table {
+            font-weight: 800;
+        }
+
+        .table-striped>tbody>tr:nth-of-type(odd)>* {
+            --bs-table-accent-bg: rgba(233, 236, 239, 0.3) !important;
+        }
+
+        .dataTables_scrollBody::-webkit-scrollbar-track {
+            -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+            background-color: #F5F5F5;
+            border-radius: 10px;
+        }
+
+        .dataTables_scrollBody::-webkit-scrollbar {
+            width: 6px;
+            height: 3px;
+            background-color: #F5F5F5;
+        }
+
+        .dataTables_scrollBody::-webkit-scrollbar-thumb {
+            background-color: #777;
+            border-radius: 10px;
+        }
+
+        .Info-text {
+            display: flex;
+            justify-content: space-between;
+            border: 0;
+            height: fit-content;
+        }
+
+        .Tooltip {
+            position: relative;
+        }
+
+        .Tooltip:hover .Tooltip-text {
+            display: flex;
+            position: absolute;
+        }
+
+        .Tooltip .Tooltip-text {
+            z-index: 1;
+            width: 300px;
+            text-align: center;
+            background-color: black;
+            color: #fff;
+            text-align: center;
+            padding: 5px;
+            border-radius: 6px;
+            display: none;
+        }
+
+        .Tooltip .Tooltip-text::after {
+            content: "";
+            position: absolute;
+            top: -20px;
+            left: 10px;
+            margin-right: -5px;
+            border-width: 10px;
+            border-style: solid;
+            border-color: transparent transparent black transparent;
+        }
+
+        .invoice {
+            /* background-color: #fAfAfA; */
+            border-radius: 12px;
+            border: 3px solid #fff;
+            /* border: 3px solid rgba(255, 255, 255, 1); */
+            /* border-top: 1px solid #adb5bd;
+            border-bottom: 1px solid #adb5bd; */
+            padding: 10px 20px !important;
+            margin-bottom: 10px;
+            backdrop-filter: blur(25px) saturate(00%);
+            background-color: rgba(255, 255, 255, 1);
+            box-shadow: inset 0 15px 25px rgba(0, 0, 0, 0.03),
+                inset 0px -15px 25px rgba(0, 0, 0, 0.03), 0 15px 25px rgba(0, 0, 0, 0.05);
+        }
+
+        .invoice>div:not(.invoice-footer) {
+            margin: 0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- BEGIN #loader -->
+    <div id="loader" class="app-loader">
+        <span class="spinner"></span>
+    </div>
+    <!-- END #loader -->
+
+    <!-- BEGIN #app -->
+    <div id="app" class="app app-header-fixed app-sidebar-fixed ">
+        <!-- BEGIN #header -->
+        <div id="header" class="app-header">
+            <!-- BEGIN navbar-header -->
+            <div class="navbar-header">
+                <a href="index.html" class="navbar-brand"><span class="navbar-logo"></span> <b>Color</b> Admin</a>
+                <button type="button" class="navbar-mobile-toggler" data-toggle="app-sidebar-mobile">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <!-- END navbar-header -->
+            <!-- BEGIN header-nav -->
+            <div class="navbar-nav">
+                <div class="navbar-item navbar-form">
+                    <form action="" method="POST" name="search">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Enter keyword" />
+                            <button type="submit" class="btn btn-search"><i class="fa fa-search"></i></button>
+                        </div>
+                    </form>
+                </div>
+                <div class="navbar-item dropdown">
+                    <a href="#" data-bs-toggle="dropdown" class="navbar-link dropdown-toggle icon">
+                        <i class="fa fa-bell"></i>
+                        <span class="badge">5</span>
+                    </a>
+                    <div class="dropdown-menu media-list dropdown-menu-end">
+                        <div class="dropdown-header">NOTIFICATIONS (5)</div>
+                        <a href="javascript:;" class="dropdown-item media">
+                            <div class="media-left">
+                                <i class="fa fa-bug media-object bg-gray-500"></i>
+                            </div>
+                            <div class="media-body">
+                                <h6 class="media-heading">Server Error Reports <i
+                                        class="fa fa-exclamation-circle text-danger"></i></h6>
+                                <div class="text-muted fs-10px">3 minutes ago</div>
+                            </div>
+                        </a>
+                        <a href="javascript:;" class="dropdown-item media">
+                            <div class="media-left">
+                                <img src="/ColorAssets/img/user/user-1.jpg" class="media-object" alt="" />
+                                <i class="fab fa-facebook-messenger text-blue media-object-icon"></i>
+                            </div>
+                            <div class="media-body">
+                                <h6 class="media-heading">John Smith</h6>
+                                <p>Quisque pulvinar tellus sit amet sem scelerisque tincidunt.</p>
+                                <div class="text-muted fs-10px">25 minutes ago</div>
+                            </div>
+                        </a>
+                        <a href="javascript:;" class="dropdown-item media">
+                            <div class="media-left">
+                                <img src="/ColorAssets/img/user/user-2.jpg" class="media-object" alt="" />
+                                <i class="fab fa-facebook-messenger text-blue media-object-icon"></i>
+                            </div>
+                            <div class="media-body">
+                                <h6 class="media-heading">Olivia</h6>
+                                <p>Quisque pulvinar tellus sit amet sem scelerisque tincidunt.</p>
+                                <div class="text-muted fs-10px">35 minutes ago</div>
+                            </div>
+                        </a>
+                        <a href="javascript:;" class="dropdown-item media">
+                            <div class="media-left">
+                                <i class="fa fa-plus media-object bg-gray-500"></i>
+                            </div>
+                            <div class="media-body">
+                                <h6 class="media-heading"> New User Registered</h6>
+                                <div class="text-muted fs-10px">1 hour ago</div>
+                            </div>
+                        </a>
+                        <a href="javascript:;" class="dropdown-item media">
+                            <div class="media-left">
+                                <i class="fa fa-envelope media-object bg-gray-500"></i>
+                                <i class="fab fa-google text-warning media-object-icon fs-14px"></i>
+                            </div>
+                            <div class="media-body">
+                                <h6 class="media-heading"> New Email From John</h6>
+                                <div class="text-muted fs-10px">2 hour ago</div>
+                            </div>
+                        </a>
+                        <div class="dropdown-footer text-center">
+                            <a href="javascript:;" class="text-decoration-none">View more</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="navbar-item navbar-user dropdown">
+                    <a href="#" class="navbar-link dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown">
+                        <img src="/ColorAssets/img/user/user-13.jpg" alt="" />
+                        <span>
+                            <span class="d-none d-md-inline">Adam Schwartz</span>
+                            <b class="caret"></b>
+                        </span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-end me-1">
+                        <a href="extra_profile.html" class="dropdown-item">Edit Profile</a>
+                        <a href="email_inbox.html" class="dropdown-item d-flex align-items-center">
+                            Inbox
+                            <span class="badge bg-danger rounded-pill ms-auto pb-4px">2</span>
+                        </a>
+                        <a href="calendar.html" class="dropdown-item">Calendar</a>
+                        <a href="settings.html" class="dropdown-item">Settings</a>
+                        <div class="dropdown-divider"></div>
+                        <a href="login.html" class="dropdown-item">Log Out</a>
+                    </div>
+                </div>
+            </div>
+            <!-- END header-nav -->
+        </div>
+        <!-- END #header -->
+
+        <!-- BEGIN #sidebar -->
+        <div id="sidebar" class="app-sidebar">
+            <!-- BEGIN scrollbar -->
+            <div class="app-sidebar-content" data-scrollbar="true" data-height="100%">
+                <!-- BEGIN menu -->
+                <div class="menu">
+                    <div class="menu-profile">
+                        <a href="javascript:;" class="menu-profile-link" data-toggle="app-sidebar-profile"
+                            data-target="#appSidebarProfileMenu">
+                            <div class="menu-profile-cover with-shadow"></div>
+                            <div class="menu-profile-image">
+                                <img src="/ColorAssets/img/user/user-13.jpg" />
+                            </div>
+                            <div class="menu-profile-info">
+                                <div class="d-flex align-items-center">
+                                    <div class="flex-grow-1"> Sean Ngu </div>
+                                    <div class="menu-caret ms-auto"></div>
+                                </div>
+                                <small>Frontend developer</small>
+                            </div>
+                        </a>
+                    </div>
+                    <div id="appSidebarProfileMenu" class="collapse">`
+                        <div class="menu-item pt-5px">
+                            <a href="javascript:;" class="menu-link">
+                                <div class="menu-icon"><i class="fa fa-cog"></i></div>
+                                <div class="menu-text">Settings</div>
+                            </a>
+                        </div>
+                        <div class="menu-item">
+                            <a href="javascript:;" class="menu-link">
+                                <div class="menu-icon"><i class="fa fa-pencil-alt"></i></div>
+                                <div class="menu-text"> Send Feedback</div>
+                            </a>
+                        </div>
+                        <div class="menu-item pb-5px">
+                            <a href="javascript:;" class="menu-link">
+                                <div class="menu-icon"><i class="fa fa-question-circle"></i></div>
+                                <div class="menu-text"> Helps</div>
+                            </a>
+                        </div>
+                        <div class="menu-divider m-0"></div>
+                    </div>
+
+                    <div class="menu-header">Navigation</div>
+
+                    <div class="menu-item active">
+                        <a href="/index.html" class="menu-link">
+                            <div class="menu-icon"> <i class="fa fa-sitemap"></i> </div>
+                            <div class="menu-text">Dashboard</div>
+                        </a>
+                    </div>
+
+                    <div class="menu-item">
+                        <a href="/Requisition_Menu.html" class="menu-link">
+                            <div class="menu-icon">
+                                <i class="fa fa-map"></i>
+                            </div>
+                            <div class="menu-text">Requisition</div>
+                        </a>
+                    </div>
+
+                    <div class="menu-item">
+                        <a href="/Investment.html" class="menu-link">
+                            <div class="menu-icon">
+                                <i class="fa fa-money-bill-transfer"></i>
+                            </div>
+                            <div class="menu-text">Investment</div>
+                        </a>
+                    </div>
+
+                    <div class="menu-item has-sub">
+                        <a href="javascript:;" class="menu-link">
+                            <div class="menu-icon"> <i class="fa fa-gears"></i> </div>
+                            <div class="menu-text">Settings</div>
+                            <div class="menu-caret"></div>
+                        </a>
+
+                        <div class="menu-submenu">
+                            <div class="menu-item">
+                                <a href="/Set_Prime.html" class="menu-link">
+                                    <div class="menu-icon">
+                                        <i class="fa fa-home"></i>
+                                    </div>
+                                    <div class="menu-text">Prime Setting</div>
+                                </a>
+                            </div>
+
+                            <div class="menu-item">
+                                <a href="/Set_CompanyPolicy.html" class="menu-link">
+                                    <div class="menu-icon">
+                                        <i class="fa fa-home"></i>
+                                    </div>
+                                    <div class="menu-text">Company Policy Setting</div>
+                                </a>
+                            </div>
+
+                            <div class="menu-item">
+                                <a href="/Set_PreBoarding.html" class="menu-link">
+                                    <div class="menu-icon">
+                                        <i class="fa fa-home"></i>
+                                    </div>
+                                    <div class="menu-text">Preboarding Setting</div>
+                                </a>
+                            </div>
+
+                            <div class="menu-item">
+                                <a href="/Set_Onboarding.html" class="menu-link">
+                                    <div class="menu-icon">
+                                        <i class="fa fa-home"></i>
+                                    </div>
+                                    <div class="menu-text">Onboarding Setting</div>
+                                </a>
+                            </div>
+
+                            <div class="menu-item">
+                                <a href="/Set_TimeAttendance.html" class="menu-link">
+                                    <div class="menu-icon"><i class="fa fa-home"></i></div>
+                                    <div class="menu-text">Time & Attendance</div>
+                                </a>
+                            </div>
+
+                            <div class="menu-item">
+                                <a href="/Set_Statutory.html" class="menu-link">
+                                    <div class="menu-icon"><i class="fa fa-home"></i></div>
+                                    <div class="menu-text">Statutory Setting</div>
+                                </a>
+                            </div>
+
+                            <div class="menu-item">
+                                <a href="/Set_Finance.html" class="menu-link">
+                                    <div class="menu-icon"><i class="fa fa-home"></i></div>
+                                    <div class="menu-text">Acc & finance Setting</div>
+                                </a>
+                            </div>
+
+                            <div class="menu-item">
+                                <a href="/Set_FNF.html" class="menu-link">
+                                    <div class="menu-icon"><i class="fa fa-home"></i></div>
+                                    <div class="menu-text">FNF Setting</div>
+                                </a>
+                            </div>
+
+                            <div class="menu-item">
+                                <a href="/Set_Leave.html" class="menu-link">
+                                    <div class="menu-icon"><i class="fa fa-home"></i></div>
+                                    <div class="menu-text">Leave Setting</div>
+                                </a>
+                            </div>
+
+                            <div class="menu-item">
+                                <a href="/Set_Payroll.html" class="menu-link">
+                                    <div class="menu-icon"><i class="fa fa-home"></i></div>
+                                    <div class="menu-text">Payroll Setting</div>
+                                </a>
+                            </div>
+
+                            <div class="menu-item">
+                                <a href="/Set_VMS.html" class="menu-link">
+                                    <div class="menu-icon"><i class="fa fa-home"></i></div>
+                                    <div class="menu-text">VMS Setting</div>
+                                </a>
+                            </div>
+
+                            <div class="menu-item">
+                                <a href="/Set_PMS.html" class="menu-link">
+                                    <div class="menu-icon"><i class="fa fa-home"></i></div>
+                                    <div class="menu-text">PMS Setting</div>
+                                </a>
+                            </div>
+
+                            <div class="menu-item">
+                                <a href="/Set_Timesheet.html" class="menu-link">
+                                    <div class="menu-icon"><i class="fa fa-home"></i></div>
+                                    <div class="menu-text">Timesheet Setting</div>
+                                </a>
+                            </div>
+
+                            <div class="menu-item">
+                                <a href="/Set_Recruitment.html" class="menu-link">
+                                    <div class="menu-icon"><i class="fa fa-home"></i></div>
+                                    <div class="menu-text">Recruitment Setting</div>
+                                </a>
+                            </div>
+
+                            <div class="menu-item">
+                                <a href="/Set_HR.html" class="menu-link">
+                                    <div class="menu-icon"><i class="fa fa-home"></i></div>
+                                    <div class="menu-text">HR Setting</div>
+                                </a>
+                            </div>
+
+                            <div class="menu-item">
+                                <a href="/Set_Assets.html" class="menu-link">
+                                    <div class="menu-icon"> <i class="fa fa-home"></i> </div>
+                                    <div class="menu-text">Assets Setting</div>
+                                </a>
+                            </div>
+
+                            <div class="menu-item">
+                                <a href="/Set_ClaimReimbusement.html" class="menu-link">
+                                    <div class="menu-icon"> <i class="fa fa-home"></i> </div>
+                                    <div class="menu-text">Claim Reimbusement Setting</div>
+                                </a>
+                            </div>
+
+                            <div class="menu-item">
+                                <a href="/Set_Contractor.html" class="menu-link">
+                                    <div class="menu-icon"> <i class="fa fa-home"></i> </div>
+                                    <div class="menu-text">Contractor Setting</div>
+                                </a>
+                            </div>
+
+                            <div class="menu-item">
+                                <a href="/Set_NightRound.html" class="menu-link">
+                                    <div class="menu-icon"> <i class="fa fa-home"></i></div>
+                                    <div class="menu-text">Night Round Setting</div>
+                                </a>
+                            </div>
+                            <div class="menu-item">
+                                <a href="/Set_TravelManagement.html" class="menu-link">
+                                    <div class="menu-icon"> <i class="fa fa-home"></i> </div>
+                                    <div class="menu-text">Travel Management Setting</div>
+                                </a>
+                            </div>
+
+                            <div class="menu-item">
+                                <a href="/Set_Training.html" class="menu-link">
+                                    <div class="menu-icon"> <i class="fa fa-home"></i> </div>
+                                    <div class="menu-text">Training Setting</div>
+                                </a>
+                            </div>
+
+                            <div class="menu-item">
+                                <a href="/Set_TicketManagement.html" class="menu-link">
+                                    <div class="menu-icon"> <i class="fa fa-home"></i></div>
+                                    <div class="menu-text"> Ticket Management Setting</div>
+                                </a>
+                            </div>
+
+                            <div class="menu-item">
+                                <a href="/Set_ClaimReimbusement.html" class="menu-link">
+                                    <div class="menu-icon"> <i class="fa fa-home"></i> </div>
+                                    <div class="menu-text">ID Card Setting</div>
+                                </a>
+                            </div>
+
+                            <div class="menu-item">
+                                <a href="/Set_ELearning.html" class="menu-link">
+                                    <div class="menu-icon"> <i class="fa fa-home"></i> </div>
+                                    <div class="menu-text">E-Learning Setting</div>
+                                </a>
+                            </div>
+
+                            <div class="menu-item">
+                                <a href="/Set_Conference.html" class="menu-link">
+                                    <div class="menu-icon"> <i class="fa fa-home"></i></div>
+                                    <div class="menu-text">Conference Setting</div>
+                                </a>
+                            </div>
+
+                            <div class="menu-item">
+                                <a href="/Set_Canteen.html" class="menu-link">
+                                    <div class="menu-icon"> <i class="fa fa-home"></i></div>
+                                    <div class="menu-text">Canteen Setting</div>
+                                </a>
+                            </div>
+
+                            <div class="menu-item">
+                                <a href="/Set_Letter.html" class="menu-link">
+                                    <div class="menu-icon"> <i class="fa fa-home"></i></div>
+                                    <div class="menu-text">Letter Setting</div>
+                                </a>
+                            </div>
+
+                            <div class="menu-item">
+                                <a href="/Set_IncomeTax.html" class="menu-link">
+                                    <div class="menu-icon"> <i class="fa fa-home"></i></div>
+                                    <div class="menu-text">Income Tax Setting</div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- BEGIN minify-button -->
+                    <div class="menu-item d-flex">
+                        <a href="javascript:;"
+                            class="app-sidebar-minify-btn ms-auto d-flex align-items-center text-decoration-none"
+                            data-toggle="app-sidebar-minify"><i class="fa fa-angle-double-left"></i></a>
+                    </div>
+                    <!-- END minify-button -->
+                </div>
+                <!-- END menu -->
+            </div>
+            <!-- END scrollbar -->
+        </div>
+        <div class="app-sidebar-bg"></div>
+        <div class="app-sidebar-mobile-backdrop">
+            <a href="#" data-dismiss="app-sidebar-mobile" class="stretched-link"></a>
+        </div>
+        <!-- END #sidebar -->
+
+        <div id="content" class="app-content">
+            <!-- BEGIN breadcrumb -->
+            <ol class="breadcrumb float-xl-end">
+                <li class="breadcrumb-item"><a href="/index.html">Home</a></li>
+                <li class="breadcrumb-item active"> Investment Under Section 80-C </li>
+            </ol>
+            <!-- END breadcrumb -->
+
+            <!-- BEGIN page-header -->
+            <h1 class="page-header"> Investment Under Section 80-C </h1>
+            <!-- END page-header -->
+
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- BEGIN panel -->
+                    <div class="panel panel-inverse" data-sortable-id="index-1">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">Investment Under Section 80-C </h4>
+                            <div class="panel-heading-btn">
+                                <a href="javascript:;" class="btn btn-xs btn-icon btn-default"
+                                    data-toggle="panel-expand"><i class="fa fa-expand"></i></a>
+                                <a href="javascript:;" class="btn btn-xs btn-icon btn-success"
+                                    data-toggle="panel-reload"><i class="fa fa-redo"></i></a>
+                            </div>
+                        </div>
+                        <div class="alert alert-yellow rounded-0 pb-0 d-flex align-items-center mb-0 text-black">
+                            <p class="pb-0">
+                                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Odio, a quae voluptas error
+                                voluptatum necessitatibus. Consectetur aut facilis corrupti adipisci.
+                            </p>
+                        </div>
+                        <div class="panel-body" style="overflow: auto !important;" data-scrollbar="true">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <form>
+                                        <div class="invoice">
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <div class="row">
+                                                        <label class="form-label col-form-label p-0 col-md-4 col-5">
+                                                            Employee ID
+                                                        </label>
+                                                        <div class="col-md-2 col-1">
+                                                            :
+                                                        </div>
+                                                        <div class="col-md-6 col-6">
+                                                            <h6>
+                                                                <label class="form-label col-form-label p-0"> 60133
+                                                                </label>
+                                                            </h6>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <div class="row">
+                                                        <label class="form-label col-form-label p-0 col-md-2 col-5">
+                                                            Name
+                                                        </label>
+                                                        <div class="col-md-1 col-1">
+                                                            :
+                                                        </div>
+                                                        <div class="col-md-9 col-6">
+                                                            <h6>
+                                                                <label class="form-label col-form-label p-0">
+                                                                    Akash Dilip Kumbhar </label>
+                                                            </h6>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <div class="row">
+                                                        <label class="form-label col-form-label p-0 col-md-4 col-5">
+                                                            Department :
+                                                        </label>
+                                                        <div class="col-md-2 col-1">
+                                                            :
+                                                        </div>
+                                                        <div class="col-md-6 col-6">
+                                                            <h6>
+                                                                <label class="form-label col-form-label p-0"> IT Dept.
+                                                                </label>
+                                                            </h6>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="row">
+                                                        <label class="form-label col-form-label p-0 col-md-4 col-5">
+                                                            Designation
+                                                        </label>
+                                                        <div class="col-md-2 col-1">
+                                                            :
+                                                        </div>
+                                                        <div class="col-md-6 col-6">
+                                                            <h6>
+                                                                <label class="form-label col-form-label p-0">Software
+                                                                    Developer </label>
+                                                            </h6>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-1"></div>
+                                                <div class="col-md-3">
+                                                    <div class="row">
+                                                        <label class="form-label col-form-label p-0 col-md-4 col-5">
+                                                            Grade
+                                                        </label>
+                                                        <div class="col-md-2 col-1">
+                                                            :
+                                                        </div>
+                                                        <div class="col-md-6 col-6">
+                                                            <h6>
+                                                                <label class="form-label col-form-label p-0"> A++
+                                                                </label>
+                                                            </h6>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <div class="row">
+                                                        <label class="form-label col-form-label p-0 col-md-4 col-5"> DOJ
+
+                                                        </label>
+                                                        <div class="col-md-2 col-1">
+                                                            :
+                                                        </div>
+                                                        <div class="col-md-6 col-6">
+                                                            <h6>
+                                                                <label class="form-label col-form-label p-0"> 10/01/2022
+                                                                </label>
+                                                            </h6>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="row">
+                                                        <label class="form-label col-form-label p-0 col-md-4 col-5"> PAN
+
+                                                        </label>
+                                                        <div class="col-md-2 col-1">
+                                                            :
+                                                        </div>
+                                                        <div class="col-md-6 col-6">
+                                                            <h6>
+                                                                <label class="form-label col-form-label p-0"> INTPK0540M
+                                                                </label>
+                                                            </h6>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-1"></div>
+                                                <div class="col-md-3">
+                                                    <div class="row">
+                                                        <label class="form-label col-form-label p-0 col-md-4 col-5"> Age
+
+                                                        </label>
+                                                        <div class="col-md-2 col-1">
+                                                            :
+                                                        </div>
+                                                        <div class="col-md-6 col-6">
+                                                            <h6>
+                                                                <label class="form-label col-form-label p-0"> 27
+                                                                </label>
+                                                            </h6>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <div class="row">
+                                                        <label class="form-label col-form-label p-0 col-md-4 col-5">
+                                                            Last Update
+                                                        </label>
+                                                        <div class="col-md-2 col-1">
+                                                            :
+                                                        </div>
+                                                        <div class="col-md-6 col-6">
+                                                            <h6>
+                                                                <label class="form-label col-form-label p-0"> 10/01/2022
+                                                                </label>
+                                                            </h6>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="row">
+                                                        <label class="form-label col-form-label p-0 col-md-4 col-5">
+                                                            Count
+                                                        </label>
+                                                        <div class="col-md-2 col-1">
+                                                            :
+                                                        </div>
+                                                        <div class="col-md-6 col-6">
+                                                            <h6>
+                                                                <label class="form-label col-form-label p-0"> 02
+                                                                </label>
+                                                            </h6>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="row mb-15px">
+                                                    <label class="form-label col-form-label col-md-4">Financial Year
+                                                        <span class="important">*</span> </label>
+                                                    <div class="col-md-8">
+                                                        <select class="form-select">
+                                                            <option class="form-control">2022</option>
+                                                            <option class="form-control">2021</option>
+                                                            <option class="form-control">2020</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- BEGIN table-responsive -->
+                                        <table class="table table-striped table-bordered align-middle"
+                                            data-scrollbar="true">
+                                            <thead>
+                                                <tr>
+                                                    <th class="text-start bg-cyan text-white" colspan="5">
+                                                        <h5> Under Section 80-C </h5>
+                                                    </th>
+                                                </tr>
+                                                <tr>
+                                                    <th class="text-nowrap">
+                                                        Sr.No. </th>
+                                                    <th class="text-nowrap">Particular</th>
+                                                    <th class="text-nowrap">Current Amount</th>
+                                                    <th class="text-nowrap">Limit </th>
+                                                    <th class="text-nowrap">Eligible Deduction</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td><b>1</b></td>
+                                                    <td>
+                                                        <div class="Info-text">
+                                                            <b>Employee's National Pension Scheme 80CCD(1)</b>
+                                                            <div class="Tooltip">
+                                                                <i class="fa fa-info-circle fs-15px"></i>
+                                                                <div class="Tooltip-text">
+                                                                    Section 80CCD1 allows you to get tax deduction
+                                                                    benefits from
+                                                                    the amount you deposit in your NPS account.
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+
+                                                    <td><input type="text" class="form-control" /></td>
+                                                    <td>150000</td>
+                                                    <td>0</td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td><b>2</b></td>
+                                                    <td>
+                                                        <div class="Info-text">
+                                                            <b>Pension Plan from Insurance Companies/Mutual Funds</b>
+                                                            <div class="Tooltip">
+                                                                <i class="fa fa-info-circle fs-15px"></i>
+                                                                <div class="Tooltip-text">
+                                                                    Section 80CCC of the Income Tax Act of 1961 allows
+                                                                    for
+                                                                    annual deductions of up to Rs.1.5 lakh for
+                                                                    contributions
+                                                                    made by an individual to designated pension plans
+                                                                    provided
+                                                                    by life insurance.
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td><input type="text" class="form-control" /></td>
+                                                    <td>150000</td>
+                                                    <td>0</td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td><b>3</b></td>
+                                                    <td>
+                                                        <div class="Info-text">
+                                                            <b>Housing Loan-Principal Repayment</b>
+                                                            <div class="Tooltip">
+                                                                <i class="fa fa-info-circle fs-15px"></i>
+                                                                <div class="Tooltip-text">
+                                                                    The principal paid on the home loan EMI for the year
+                                                                    is
+                                                                    allowed as a deduction under Section 80C.</div>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+
+                                                    <td><input type="text" class="form-control" /></td>
+                                                    <td>150000</td>
+                                                    <td>0</td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td><b>4</b></td>
+                                                    <td>
+                                                        <div class="Info-text">
+                                                            <b>Life Insurance Premium</b>
+                                                            <div class="Tooltip">
+                                                                <i class="fa fa-info-circle fs-15px"></i>
+                                                                <div class="Tooltip-text">
+                                                                    Premium on life insurance policy can be claimed as
+                                                                    deduction
+                                                                    under section 80C. Calculation 10% of Sum Assured or
+                                                                    Actual
+                                                                    amount paid whichever is lower.
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td><input type="text" class="form-control" /></td>
+                                                    <td>150000</td>
+                                                    <td>0</td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td><b>5</b></td>
+                                                    <td>
+                                                        <div class="Info-text"> <b>National Saving Certificate</b>
+                                                            <div class="Tooltip">
+                                                                <i class="fa fa-info-circle fs-15px"></i>
+                                                                <div class="Tooltip-text">
+                                                                    Investments made towards National Savings
+                                                                    Certificate are
+                                                                    eligible for a deduction under Section 80C up to a
+                                                                    maximum
+                                                                    limit of ₹1.5 lakhs in a financial year.
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td><input type="text" class="form-control" /></td>
+                                                    <td>150000</td>
+                                                    <td>0</td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td><b>6</b></td>
+                                                    <td>
+                                                        <div class="Info-text">
+                                                            <b>National Saving Certificate Accrued Interest</b>
+                                                            <div class="Tooltip">
+                                                                <i class="fa fa-info-circle fs-15px"></i>
+                                                                <div class="Tooltip-text">
+                                                                    Interest Accrued on NSC reinvested for 1st 4 year so
+                                                                    it will
+                                                                    eligible for the deduction under sec 80C.
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td><input type="text" class="form-control" /></td>
+                                                    <td>150000</td>
+                                                    <td>0</td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td><b>7</b></td>
+                                                    <td>
+                                                        <div class="Info-text">
+                                                            <b>Public Provident Fund</b>
+                                                            <div class="Tooltip">
+                                                                <i class="fa fa-info-circle fs-15px"></i>
+                                                                <div class="Tooltip-text">
+                                                                    All deposits made in the PPF are deductible under
+                                                                    Section
+                                                                    80C of the Income Tax Act
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td><input type="text" class="form-control" /></td>
+                                                    <td>150000</td>
+                                                    <td>0</td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td><b>8</b></td>
+                                                    <td>
+                                                        <div class="Info-text"><b>Unit Linked Insurance Plan</b>
+                                                            <div class="Tooltip">
+                                                                <i class="fa fa-info-circle fs-15px"></i>
+                                                                <div class="Tooltip-text">
+                                                                    A policyholder can avail of tax deduction up to Rs.
+                                                                    1,
+                                                                    50,000 on the policy premium amounts paid towards
+                                                                    the ULIPs
+                                                                    under section 80C.
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td><input type="text" class="form-control" /></td>
+                                                    <td>150000</td>
+                                                    <td>0</td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td><b>9</b></td>
+                                                    <td>
+                                                        <div class="Info-text"> <b>E.L.S.S (Tax Saving Mutual Fund)</b>
+                                                            <div class="Tooltip">
+                                                                <i class="fa fa-info-circle fs-15px"></i>
+                                                                <div class="Tooltip-text">
+                                                                    An equity-linked savings scheme or ELSS is a
+                                                                    tax-saving
+                                                                    (Mutual Fund) investment under Section 80C. 3 year
+                                                                    Lock in
+                                                                    this mutual fund.
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td><input type="text" class="form-control" /></td>
+                                                    <td>150000</td>
+                                                    <td>0</td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td><b>10</b></td>
+                                                    <td>
+                                                        <div class="Info-text"> <b>Tuition fees for 2 children</b>
+                                                            <div class="Tooltip">
+                                                                <i class="fa fa-info-circle fs-15px"></i>
+                                                                <div class="Tooltip-text">
+                                                                    In a financial year, individuals can claim a maximum
+                                                                    deduction of Rs 1.5 lakh for payments made towards
+                                                                    tuition
+                                                                    fees for 2 children under Section 80C.
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td><input type="text" class="form-control" /></td>
+                                                    <td>150000</td>
+                                                    <td>0</td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td><b>11</b></td>
+                                                    <td>
+                                                        <div class="Info-text"> <b>Tax Saving Shares / NABARD and Other
+                                                                Bonds</b>
+                                                            <div class="Tooltip">
+                                                                <i class="fa fa-info-circle fs-15px"></i>
+                                                                <div class="Tooltip-text">
+                                                                    Section 80C of the Income-tax Act to provide that
+                                                                    deposits
+                                                                    made in such bonds issued by the National Bank for
+                                                                    Agriculture and Rural Development, as the Central
+                                                                    Government
+                                                                    may, by notification in the official gazette,
+                                                                    specify in
+                                                                    this behalf, shall be eligible for deduction under
+                                                                    the said
+                                                                    section.
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td><input type="text" class="form-control" /></td>
+                                                    <td>150000</td>
+                                                    <td>0</td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td><b>12</b></td>
+                                                    <td>
+                                                        <div class="Info-text"> <b>Tax saving Fix Deposits (Tenure - 5
+                                                                years or
+                                                                more)</b>
+                                                            <div class="Tooltip">
+                                                                <i class="fa fa-info-circle fs-15px"></i>
+                                                                <div class="Tooltip-text">
+                                                                    A tax-saving fixed deposit (FD) account is a type of
+                                                                    fixed
+                                                                    deposit account that offers a tax deduction under
+                                                                    Section
+                                                                    80C.
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td><input type="text" class="form-control" /></td>
+                                                    <td>150000</td>
+                                                    <td>0</td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td><b>13</b></td>
+                                                    <td>
+                                                        <div class="Info-text"> <b>Housing - Stamp Duty &
+                                                                Registration</b>
+                                                            <div class="Tooltip">
+                                                                <i class="fa fa-info-circle fs-15px"></i>
+                                                                <div class="Tooltip-text">
+                                                                    Section 80CCC of the Income Tax Act of 1961 allows
+                                                                    for
+                                                                    Stamp duty and registration charges and other
+                                                                    expenses which
+                                                                    are directly related to the transfer are allowed as
+                                                                    a
+                                                                    deduction under Section 80C.
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td><input type="text" class="form-control" /></td>
+                                                    <td>150000</td>
+                                                    <td>0</td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td><b>14</b></td>
+                                                    <td>
+                                                        <div class="Info-text"> <b>Post Office Time Deposit Scheme</b>
+                                                            <div class="Tooltip">
+                                                                <i class="fa fa-info-circle fs-15px"></i>
+                                                                <div class="Tooltip-text">
+                                                                    Individuals investing in 5 year Post office time
+                                                                    deposits
+                                                                    are eligible for tax benefit
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td><input type="text" class="form-control" /></td>
+                                                    <td>150000</td>
+                                                    <td>0</td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td><b>15</b></td>
+                                                    <td>
+                                                        <div class="Info-text"> <b>Senior Citizen Saving Scheme</b>
+                                                            <div class="Tooltip">
+                                                                <i class="fa fa-info-circle fs-15px"></i>
+                                                                <div class="Tooltip-text">
+                                                                    A Senior Citizens’ Saving Scheme (SCSS) is a
+                                                                    government-backed retirement benefits programme.
+                                                                    Senior
+                                                                    citizens resident in India can invest a lump sum in
+                                                                    the
+                                                                    scheme, individually or jointly, and get access to
+                                                                    regular
+                                                                    income along with tax benefits.
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td><input type="text" class="form-control" /></td>
+                                                    <td>150000</td>
+                                                    <td>0</td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td><b>16</b></td>
+                                                    <td>
+                                                        <div class="Info-text"> <b>Sukanya Samriddhi Scheme</b>
+                                                            <div class="Tooltip">
+                                                                <i class="fa fa-info-circle fs-15px"></i>
+                                                                <div class="Tooltip-text">
+                                                                    "Investments made in the SSY scheme are eligible for
+                                                                    deductions under Section 80C, subject to a maximum
+                                                                    cap of Rs
+                                                                    1.5 lakh.
+                                                                    The interest that accrues against this account which
+                                                                    gets
+                                                                    compounded annually is also exempt from tax under
+                                                                    Section 10
+                                                                    of the Income Tax Act."
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td><input type="text" class="form-control" /></td>
+                                                    <td>150000</td>
+                                                    <td>0</td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td><b>17</b></td>
+                                                    <td>
+                                                        <div class="Info-text"> <b>Other Investment</b>
+                                                            <div class="Tooltip">
+                                                                <i class="fa fa-info-circle fs-15px"></i>
+                                                                <div class="Tooltip-text">
+                                                                    Section 80CCC of the Income Tax Act of 1961 allows
+                                                                    for
+                                                                    annual deductions of up to Rs.1.5 lakh for
+                                                                    contributions
+                                                                    made by an individual to designated pension plans
+                                                                    provided
+                                                                    by life insurance.
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td><input type="text" class="form-control" /></td>
+                                                    <td>150000</td>
+                                                    <td>0</td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td><b>18</b></td>
+                                                    <td>
+                                                        <div class="Info-text"> <b>Annuity plan of LIC or other insurer
+                                                                towards
+                                                                Pension Scheme -
+                                                                80CCC</b>
+                                                            <div class="Tooltip">
+                                                                <i class="fa fa-info-circle fs-15px"></i>
+                                                                <div class="Tooltip-text">
+                                                                    "Any installment or part payment of the amount due
+                                                                    under any
+                                                                    self-financing or other scheme of any development
+                                                                    authority,
+                                                                    housing board or other authority engaged in the
+                                                                    construction
+                                                                    and sale of house property on ownership basis
+                                                                    "
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td><input type="text" class="form-control" /></td>
+                                                    <td>150000</td>
+                                                    <td>0</td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td><b>19</b></td>
+                                                    <td>
+                                                        <div class="Info-text">
+                                                            <b>Superannuation Fund Contribution </b>
+                                                            <div class="Tooltip">
+                                                                <i class="fa fa-info-circle fs-15px"></i>
+                                                                <div class="Tooltip-text">
+                                                                    Employee’s contribution to the approved
+                                                                    superannuation fund
+                                                                    is deductible under Section 80C subject to overall
+                                                                    limit of
+                                                                    Rs 1,50,000.
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td><input type="text" class="form-control" /></td>
+                                                    <td>150000</td>
+                                                    <td>0</td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td><b></b></td>
+                                                    <td>
+                                                        <h3 class="text-center">Total</h3>
+                                                    </td>
+                                                    <td><input type="text" class="form-control" disabled /></td>
+                                                    <td>150000</td>
+                                                    <td>0</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <!-- END table-responsive -->
+
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="BtnBx">
+                                                    <div>
+                                                        <button type="submit" id="SubmitBtn"
+                                                            class="btn btn-success btnpress"><i
+                                                                class="fa-solid fa-floppy-disk"></i> Submit</button>
+                                                        <button type="button" class="btn btn-danger btnpress"
+                                                            data-bs-toggle="modal" href="#modal-dialog"><i
+                                                                class="fa-solid fa-share-from-square"></i> Back
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- END panel -->
+                </div>
+            </div>
+        </div>
+
+        <!-- BEGIN scroll-top-btn -->
+        <a href="javascript:;" class="btn btn-icon btn-circle btn-success btn-scroll-to-top"
+            data-toggle="scroll-to-top"><i class="fa fa-angle-up"></i></a>
+        <!-- END scroll-top-btn -->
+    </div>
+    <!-- END #app -->
+    <!-- ================== BEGIN core-js ================== -->
+    <script src="/ColorAssets/js/app.min.js"></script>
+    <script src="/ColorAssets/js/vendor.min.js"></script>
+    <!-- ================== END core-js ================== -->
+    <!-- ================== BEGIN page-js ================== -->
+    <script src="/ColorAssets/plugins/bootstrap-datepicker/dist/js/bootstrap-datepicker.js"></script>
+    <script src="/ColorAssets/js/demo/dashboard.js"></script>
+    <!-- ================== END page-js ================== -->
+
+
+
+    <!-- ================== SweetAlert MSG Script ================== -->
+    <script>
+        $(document).ready(function () {
+            $('#SubmitBtn').on('click', function () {
+                Swal.fire({
+                    title: 'Saved',
+                    icon: 'success',
+
+                    allowOutsideClick: () => {
+                        const popup = Swal.getPopup()
+                        popup.classList.remove('swal2-show')
+                        setTimeout(() => {
+                            popup.classList.add('animate__animated', 'animate__headShake')
+                        })
+                        setTimeout(() => {
+                            popup.classList.remove('animate__animated', 'animate__headShake')
+                        }, 500)
+                        return false
+                    }
+                })
+            })
+        });
+    </script>
+
+    <!-- ================== END SweetAlert-js ================== -->
+
+</body>
+
+</html>

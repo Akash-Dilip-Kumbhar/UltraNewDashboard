@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>@Convert.ToString(Session["CompanyName"]) | @ViewBag.FormName</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+
+    <!-- ================== BEGIN core-css ================== -->
+    <link href="/ColorAssets/css/default/app.min.css" rel="stylesheet" />
+    <link href="/ColorAssets/css/vendor.min.css" rel="stylesheet" />
+    <!-- ================== END core-css ================== -->
+
+    <!-- ================== BEGIN page-css ================== -->
+    <link href="/ColorAssets/plugins/jvectormap-next/jquery-jvectormap.css" rel="stylesheet" />
+    <link href="/ColorAssets/plugins/bootstrap-datepicker/dist/css/bootstrap-datepicker.css" rel="stylesheet" />
+    <link href="/ColorAssets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+    <!-- ================== END page-css ================== -->
+
+    <!-- required files -->
+    <!-- ================== BEGIN page-css ================== -->
+    <link href="/ColorAssets/plugins/datatables.net-bs5/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
+    <link href="/ColorAssets/plugins/datatables.net-responsive-bs5/css/responsive.bootstrap5.min.css"
+        rel="stylesheet" />
+    <link href="/ColorAssets/plugins/datatables.net-fixedheader-bs5/css/fixedHeader.bootstrap5.min.css"
+        rel="stylesheet" />
+    <!-- ================== END page-css ================== -->
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.12/dist/sweetalert2.all.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.12/dist/sweetalert2.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <!-- ================== BEGIN core-css ================== -->
+    <link href="/ColorAssets/plugins/lightbox2_ReEdit/dist/css/lightbox.css" rel="stylesheet" />
+    <script src="/ColorAssets/plugins/lightbox2_ReEdit/dist/js/lightbox.js"></script>
+    <script src="/ColorAssets/plugins/lightbox2_ReEdit/dist/js/lightbox-plus-jquery.min.js"></script>
+    <!-- ================== END core-css ================== -->
+
+
+    <style>
+        .btnpress:active {
+            transform: translateY(4px);
+            color: #fff;
+        }
+
+        .card {
+            border-radius: 10px;
+            box-shadow: 1px 1px 20px rgba(0, 0, 0, 0.1);
+            margin: 5px;
+            font-family: 'Montserrat', sans-serif;
+            border-radius: 5px;
+        }
+
+        .card-title {
+            font-weight: 800;
+            font-size: 15px;
+
+        }
+
+        .card-title-fixed-size {
+            height: 40px;
+            overflow-y: auto;
+        }
+
+        .card-text {
+            font-weight: 600;
+            text-align: justify;
+            font-size: 13px;
+        }
+
+        .card-text-fixed {
+            height: 100px;
+            overflow-y: auto;
+        }
+
+
+        .image {
+            display: flex;
+        }
+
+        .image .image-inner {
+            width: 80px;
+            height: 50px;
+            overflow: hidden;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            border: 1px solid lightgray;
+
+        }
+
+        .image .image-inner img {
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- BEGIN #loader -->
+    <div id="loader" class="app-loader">
+        <span class="spinner"></span>
+    </div>
+    <!-- END #loader -->
+
+    <!-- BEGIN #app -->
+    <div id="app" class="app app-header-fixed app-sidebar-fixed ">
+        <!-- BEGIN #header -->
+        <div id="header" class="app-header">
+            <!-- BEGIN navbar-header -->
+            <div class="navbar-header">
+                <a href="index.html" class="navbar-brand"><span class="navbar-logo"></span> <b>Color</b> Admin</a>
+                <button type="button" class="navbar-mobile-toggler" data-toggle="app-sidebar-mobile">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <!-- END navbar-header -->
+            <!-- BEGIN header-nav -->
+            <div class="navbar-nav">
+                <div class="navbar-item navbar-form">
+                    <form action="" method="POST" name="search">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Enter keyword" />
+                            <button type="submit" class="btn btn-search"><i class="fa fa-search"></i></button>
+                        </div>
+                    </form>
+                </div>
+                <div class="navbar-item dropdown">
+                    <a href="#" data-bs-toggle="dropdown" class="navbar-link dropdown-toggle icon">
+                        <i class="fa fa-bell"></i>
+                        <span class="badge">5</span>
+                    </a>
+                    <div class="dropdown-menu media-list dropdown-menu-end">
+                        <div class="dropdown-header">NOTIFICATIONS (5)</div>
+                        <a href="javascript:;" class="dropdown-item media">
+                            <div class="media-left">
+                                <i class="fa fa-bug media-object bg-gray-500"></i>
+                            </div>
+                            <div class="media-body">
+                                <h6 class="media-heading">Server Error Reports <i
+                                        class="fa fa-exclamation-circle text-danger"></i></h6>
+                                <div class="text-muted fs-10px">3 minutes ago</div>
+                            </div>
+                        </a>
+                        <a href="javascript:;" class="dropdown-item media">
+                            <div class="media-left">
+                                <img src="/ColorAssets/img/user/user-1.jpg" class="media-object" alt="" />
+                                <i class="fab fa-facebook-messenger text-blue media-object-icon"></i>
+                            </div>
+                            <div class="media-body">
+                                <h6 class="media-heading">John Smith</h6>
+                                <p>Quisque pulvinar tellus sit amet sem scelerisque tincidunt.</p>
+                                <div class="text-muted fs-10px">25 minutes ago</div>
+                            </div>
+                        </a>
+                        <a href="javascript:;" class="dropdown-item media">
+                            <div class="media-left">
+                                <img src="/ColorAssets/img/user/user-2.jpg" class="media-object" alt="" />
+                                <i class="fab fa-facebook-messenger text-blue media-object-icon"></i>
+                            </div>
+                            <div class="media-body">
+                                <h6 class="media-heading">Olivia</h6>
+                                <p>Quisque pulvinar tellus sit amet sem scelerisque tincidunt.</p>
+                                <div class="text-muted fs-10px">35 minutes ago</div>
+                            </div>
+                        </a>
+                        <a href="javascript:;" class="dropdown-item media">
+                            <div class="media-left">
+                                <i class="fa fa-plus media-object bg-gray-500"></i>
+                            </div>
+                            <div class="media-body">
+                                <h6 class="media-heading"> New User Registered</h6>
+                                <div class="text-muted fs-10px">1 hour ago</div>
+                            </div>
+                        </a>
+                        <a href="javascript:;" class="dropdown-item media">
+                            <div class="media-left">
+                                <i class="fa fa-envelope media-object bg-gray-500"></i>
+                                <i class="fab fa-google text-warning media-object-icon fs-14px"></i>
+                            </div>
+                            <div class="media-body">
+                                <h6 class="media-heading"> New Email From John</h6>
+                                <div class="text-muted fs-10px">2 hour ago</div>
+                            </div>
+                        </a>
+                        <div class="dropdown-footer text-center">
+                            <a href="javascript:;" class="text-decoration-none">View more</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="navbar-item navbar-user dropdown">
+                    <a href="#" class="navbar-link dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown">
+                        <img src="/ColorAssets/img/user/user-13.jpg" alt="" />
+                        <span>
+                            <span class="d-none d-md-inline">Adam Schwartz</span>
+                            <b class="caret"></b>
+                        </span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-end me-1">
+                        <a href="extra_profile.html" class="dropdown-item">Edit Profile</a>
+                        <a href="email_inbox.html" class="dropdown-item d-flex align-items-center">
+                            Inbox
+                            <span class="badge bg-danger rounded-pill ms-auto pb-4px">2</span>
+                        </a>
+                        <a href="calendar.html" class="dropdown-item">Calendar</a>
+                        <a href="settings.html" class="dropdown-item">Settings</a>
+                        <div class="dropdown-divider"></div>
+                        <a href="login.html" class="dropdown-item">Log Out</a>
+                    </div>
+                </div>
+            </div>
+            <!-- END header-nav -->
+        </div>
+        <!-- END #header -->
+
+        <!-- BEGIN #sidebar -->
+        <div id="sidebar" class="app-sidebar">
+            <!-- BEGIN scrollbar -->
+            <div class="app-sidebar-content" data-scrollbar="true" data-height="100%">
+                <!-- BEGIN menu -->
+                <div class="menu">
+                    <div class="menu-profile">
+                        <a href="javascript:;" class="menu-profile-link" data-toggle="app-sidebar-profile"
+                            data-target="#appSidebarProfileMenu">
+                            <div class="menu-profile-cover with-shadow"></div>
+                            <div class="menu-profile-image">
+                                <img src="/ColorAssets/img/user/user-13.jpg" />
+                            </div>
+                            <div class="menu-profile-info">
+                                <div class="d-flex align-items-center">
+                                    <div class="flex-grow-1"> Sean Ngu </div>
+                                    <div class="menu-caret ms-auto"></div>
+                                </div>
+                                <small>Frontend developer</small>
+                            </div>
+                        </a>
+                    </div>
+                    <div id="appSidebarProfileMenu" class="collapse">`
+                        <div class="menu-item pt-5px">
+                            <a href="javascript:;" class="menu-link">
+                                <div class="menu-icon"><i class="fa fa-cog"></i></div>
+                                <div class="menu-text">Settings</div>
+                            </a>
+                        </div>
+                        <div class="menu-item">
+                            <a href="javascript:;" class="menu-link">
+                                <div class="menu-icon"><i class="fa fa-pencil-alt"></i></div>
+                                <div class="menu-text"> Send Feedback</div>
+                            </a>
+                        </div>
+                        <div class="menu-item pb-5px">
+                            <a href="javascript:;" class="menu-link">
+                                <div class="menu-icon"><i class="fa fa-question-circle"></i></div>
+                                <div class="menu-text"> Helps</div>
+                            </a>
+                        </div>
+                        <div class="menu-divider m-0"></div>
+                    </div>
+
+                    <div class="menu-header">Navigation</div>
+
+                    <div class="menu-item active">
+                        <a href="/index.html" class="menu-link">
+                            <div class="menu-icon"> <i class="fa fa-sitemap"></i> </div>
+                            <div class="menu-text">Dashboard</div>
+                        </a>
+                    </div>
+
+                    <div class="menu-item has-sub">
+                        <a href="javascript:;" class="menu-link">
+                            <div class="menu-icon"><i class="fa fa-map"></i></div>
+                            <div class="menu-text">Requisition</div>
+                            <div class="menu-caret"></div>
+                        </a>
+                        <div class="menu-submenu">
+                            <div class="menu-item" id="Leave">
+                                <a href="/Req_LeaveRequisition.html" class="menu-link">
+                                    <div class="menu-text">Leave</div>
+                                </a>
+                            </div>
+                            <div class="menu-item" id="ShortLeave">
+                                <a href="/Req_ShortLeaveRequisition.html" class="menu-link">
+                                    <div class="menu-text">Short Leave</div>
+                                </a>
+                            </div>
+                            <div class="menu-item" id="WorkFormHome">
+                                <a href="/Req_Coff.html" class="menu-link">
+                                    <div class="menu-text">Coff </div>
+                                </a>
+                            </div>
+                            <div class="menu-item" id="OutDoor">
+                                <a href="/Req_OutdoorRequisition.html" class="menu-link">
+                                    <div class="menu-text">Out Door</div>
+                                </a>
+                            </div>
+                            <div class="menu-item" id="Gatepass">
+                                <a href="/Req_Gatepass.html" class="menu-link">
+                                    <div class="menu-text">Personal Gatepass</div>
+                                </a>
+                            </div>
+                            <div class="menu-item" id="WorkFormHome">
+                                <a href="/Req_WorkFromHome.html" class="menu-link">
+                                    <div class="menu-text">Work Form Home </div>
+                                </a>
+                            </div>
+                            <div class="menu-item" id="PunchMissing">
+                                <a href="/Req_PunchMissing.html" class="menu-link">
+                                    <div class="menu-text">Punch Missing</div>
+                                </a>
+                            </div>
+                            <div class="menu-item">
+                                <a href="/Req_FNF.html" class="menu-link">
+                                    <div class="menu-text">FNF </div>
+                                </a>
+                            </div>
+                            <div class="menu-item">
+                                <a href="/Req_MaterialRequisition.html" class="menu-link">
+                                    <div class="menu-text">Material </div>
+                                </a>
+                            </div>
+                            <div class="menu-item">
+                                <a href="/Req_VisitorAppointment.html" class="menu-link">
+                                    <div class="menu-text">Visitor Appointment</div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="menu-item has-sub">
+                        <a href="javascript:;" class="menu-link">
+                            <div class="menu-icon"> <i class="fa fa-money-bill-transfer"></i> </div>
+                            <div class="menu-text">Investment</div>
+                            <div class="menu-caret"></div>
+                        </a>
+                        <div class="menu-submenu">
+                            <div class="menu-item">
+                                <a href="/Investment_HouseRental.html" class="menu-link">
+                                    <div class="menu-icon"><i class="fa fa-home"></i> </div>
+                                    <div class="menu-text">House Rental</div>
+                                </a>
+                            </div>
+                            <div class="menu-item">
+                                <a href="/Investment_UnderSection.html" class="menu-link">
+                                    <div class="menu-icon"><i class="fa fa-money-bills"></i></div>
+                                    <div class="menu-text">80 C</div>
+                                </a>
+                            </div>
+                            <div class="menu-item">
+                                <a href="/Investment_IncomeFromLetOutHouseProperty.html" class="menu-link">
+                                    <div class="menu-icon"> <i class="fa fa-home-user"></i></div>
+                                    <div class="menu-text">Income From Let Out House Property</div>
+                                </a>
+                            </div>
+                            <div class="menu-item">
+                                <a href="/Investment_ChapterVIA.html" class="menu-link">
+                                    <div class="menu-icon"><i class="fa fa-money-bill-trend-up"></i> </div>
+                                    <div class="menu-text">Chapter VI A</div>
+                                </a>
+                            </div>
+                            <div class="menu-item">
+                                <a href="Investment_SelfOccupiedHouseLoanRepayment.html" class="menu-link">
+                                    <div class="menu-icon"> <i class="fa fa-money-bill-trend-up"></i> </div>
+                                    <div class="menu-text">Self Occupied House Loan Repayment</div>
+                                </a>
+                            </div>
+                            <div class="menu-item">
+                                <a href="Investment_OtherDetails.html" class="menu-link">
+                                    <div class="menu-icon"><i class="fa fa-money-bill-trend-up"></i></div>
+                                    <div class="menu-text">Other Details</div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="menu-item has-sub">
+                        <a href="javascript:;" class="menu-link">
+                            <div class="menu-icon"> <i class="fa fa-gears"></i> </div>
+                            <div class="menu-text">Settings</div>
+                            <div class="menu-caret"></div>
+                        </a>
+
+                        <div class="menu-submenu">
+                            <div class="menu-item">
+                                <a href="/Set_Prime.html" class="menu-link">
+                                    <div class="menu-icon">
+                                        <i class="fa fa-home"></i>
+                                    </div>
+                                    <div class="menu-text">Prime Setting</div>
+                                </a>
+                            </div>
+
+                            <div class="menu-item">
+                                <a href="/Set_CompanyPolicy.html" class="menu-link">
+                                    <div class="menu-icon">
+                                        <i class="fa fa-home"></i>
+                                    </div>
+                                    <div class="menu-text">Company Policy Setting</div>
+                                </a>
+                            </div>
+
+                            <div class="menu-item">
+                                <a href="/Set_PreBoarding.html" class="menu-link">
+                                    <div class="menu-icon">
+                                        <i class="fa fa-home"></i>
+                                    </div>
+                                    <div class="menu-text">Preboarding Setting</div>
+                                </a>
+                            </div>
+
+                            <div class="menu-item">
+                                <a href="/Set_Onboarding.html" class="menu-link">
+                                    <div class="menu-icon">
+                                        <i class="fa fa-home"></i>
+                                    </div>
+                                    <div class="menu-text">Onboarding Setting</div>
+                                </a>
+                            </div>
+
+                            <div class="menu-item">
+                                <a href="/Set_TimeAttendance.html" class="menu-link">
+                                    <div class="menu-icon"><i class="fa fa-home"></i></div>
+                                    <div class="menu-text">Time & Attendance</div>
+                                </a>
+                            </div>
+
+                            <div class="menu-item">
+                                <a href="/Set_Statutory.html" class="menu-link">
+                                    <div class="menu-icon"><i class="fa fa-home"></i></div>
+                                    <div class="menu-text">Statutory Setting</div>
+                                </a>
+                            </div>
+
+                            <div class="menu-item">
+                                <a href="/Set_Finance.html" class="menu-link">
+                                    <div class="menu-icon"><i class="fa fa-home"></i></div>
+                                    <div class="menu-text">Acc & finance Setting</div>
+                                </a>
+                            </div>
+
+                            <div class="menu-item">
+                                <a href="/Set_FNF.html" class="menu-link">
+                                    <div class="menu-icon"><i class="fa fa-home"></i></div>
+                                    <div class="menu-text">FNF Setting</div>
+                                </a>
+                            </div>
+
+                            <div class="menu-item">
+                                <a href="/Set_Leave.html" class="menu-link">
+                                    <div class="menu-icon"><i class="fa fa-home"></i></div>
+                                    <div class="menu-text">Leave Setting</div>
+                                </a>
+                            </div>
+
+                            <div class="menu-item">
+                                <a href="/Set_Payroll.html" class="menu-link">
+                                    <div class="menu-icon"><i class="fa fa-home"></i></div>
+                                    <div class="menu-text">Payroll Setting</div>
+                                </a>
+                            </div>
+
+                            <div class="menu-item">
+                                <a href="/Set_VMS.html" class="menu-link">
+                                    <div class="menu-icon"><i class="fa fa-home"></i></div>
+                                    <div class="menu-text">VMS Setting</div>
+                                </a>
+                            </div>
+
+                            <div class="menu-item">
+                                <a href="/Set_PMS.html" class="menu-link">
+                                    <div class="menu-icon"><i class="fa fa-home"></i></div>
+                                    <div class="menu-text">PMS Setting</div>
+                                </a>
+                            </div>
+
+                            <div class="menu-item">
+                                <a href="/Set_Timesheet.html" class="menu-link">
+                                    <div class="menu-icon"><i class="fa fa-home"></i></div>
+                                    <div class="menu-text">Timesheet Setting</div>
+                                </a>
+                            </div>
+
+                            <div class="menu-item">
+                                <a href="/Set_Recruitment.html" class="menu-link">
+                                    <div class="menu-icon"><i class="fa fa-home"></i></div>
+                                    <div class="menu-text">Recruitment Setting</div>
+                                </a>
+                            </div>
+
+                            <div class="menu-item">
+                                <a href="/Set_HR.html" class="menu-link">
+                                    <div class="menu-icon"><i class="fa fa-home"></i></div>
+                                    <div class="menu-text">HR Setting</div>
+                                </a>
+                            </div>
+
+                            <div class="menu-item">
+                                <a href="/Set_Assets.html" class="menu-link">
+                                    <div class="menu-icon"> <i class="fa fa-home"></i> </div>
+                                    <div class="menu-text">Assets Setting</div>
+                                </a>
+                            </div>
+
+                            <div class="menu-item">
+                                <a href="/Set_ClaimReimbusement.html" class="menu-link">
+                                    <div class="menu-icon"> <i class="fa fa-home"></i> </div>
+                                    <div class="menu-text">Claim Reimbusement Setting</div>
+                                </a>
+                            </div>
+
+                            <div class="menu-item">
+                                <a href="/Set_Contractor.html" class="menu-link">
+                                    <div class="menu-icon"> <i class="fa fa-home"></i> </div>
+                                    <div class="menu-text">Contractor Setting</div>
+                                </a>
+                            </div>
+
+                            <div class="menu-item">
+                                <a href="/Set_NightRound.html" class="menu-link">
+                                    <div class="menu-icon"> <i class="fa fa-home"></i></div>
+                                    <div class="menu-text">Night Round Setting</div>
+                                </a>
+                            </div>
+                            <div class="menu-item">
+                                <a href="/Set_TravelManagement.html" class="menu-link">
+                                    <div class="menu-icon"> <i class="fa fa-home"></i> </div>
+                                    <div class="menu-text">Travel Management Setting</div>
+                                </a>
+                            </div>
+
+                            <div class="menu-item">
+                                <a href="/Set_Training.html" class="menu-link">
+                                    <div class="menu-icon"> <i class="fa fa-home"></i> </div>
+                                    <div class="menu-text">Training Setting</div>
+                                </a>
+                            </div>
+
+                            <div class="menu-item">
+                                <a href="/Set_TicketManagement.html" class="menu-link">
+                                    <div class="menu-icon"> <i class="fa fa-home"></i></div>
+                                    <div class="menu-text"> Ticket Management Setting</div>
+                                </a>
+                            </div>
+
+                            <div class="menu-item">
+                                <a href="/Set_ClaimReimbusement.html" class="menu-link">
+                                    <div class="menu-icon"> <i class="fa fa-home"></i> </div>
+                                    <div class="menu-text">ID Card Setting</div>
+                                </a>
+                            </div>
+
+                            <div class="menu-item">
+                                <a href="/Set_ELearning.html" class="menu-link">
+                                    <div class="menu-icon"> <i class="fa fa-home"></i> </div>
+                                    <div class="menu-text">E-Learning Setting</div>
+                                </a>
+                            </div>
+
+                            <div class="menu-item">
+                                <a href="/Set_Conference.html" class="menu-link">
+                                    <div class="menu-icon"> <i class="fa fa-home"></i></div>
+                                    <div class="menu-text">Conference Setting</div>
+                                </a>
+                            </div>
+
+                            <div class="menu-item">
+                                <a href="/Set_Canteen.html" class="menu-link">
+                                    <div class="menu-icon"> <i class="fa fa-home"></i></div>
+                                    <div class="menu-text">Canteen Setting</div>
+                                </a>
+                            </div>
+
+                            <div class="menu-item">
+                                <a href="/Set_Letter.html" class="menu-link">
+                                    <div class="menu-icon"> <i class="fa fa-home"></i></div>
+                                    <div class="menu-text">Letter Setting</div>
+                                </a>
+                            </div>
+
+                            <div class="menu-item">
+                                <a href="/Set_IncomeTax.html" class="menu-link">
+                                    <div class="menu-icon"> <i class="fa fa-home"></i></div>
+                                    <div class="menu-text">Income Tax Setting</div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- BEGIN minify-button -->
+                    <div class="menu-item d-flex">
+                        <a href="javascript:;"
+                            class="app-sidebar-minify-btn ms-auto d-flex align-items-center text-decoration-none"
+                            data-toggle="app-sidebar-minify"><i class="fa fa-angle-double-left"></i></a>
+                    </div>
+                    <!-- END minify-button -->
+                </div>
+                <!-- END menu -->
+            </div>
+            <!-- END scrollbar -->
+        </div>
+        <div class="app-sidebar-bg"></div>
+        <div class="app-sidebar-mobile-backdrop">
+            <a href="#" data-dismiss="app-sidebar-mobile" class="stretched-link"></a>
+        </div>
+        <!-- END #sidebar -->
+
+        <div id="content" class="app-content">
+            <!-- BEGIN breadcrumb -->
+            <ol class="breadcrumb float-xl-end">
+                <li class="breadcrumb-item"><a href="/index.html">Home</a></li>
+                <li class="breadcrumb-item active"> Market Place Gallery </li>
+            </ol>
+            <!-- END breadcrumb -->
+
+            <!-- BEGIN page-header -->
+            <h1 class="page-header"> Market Place Gallery </h1>
+            <!-- END page-header -->
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="row mb-15px">
+                        <label class="form-label col-form-label col-md-1">Filter</label>
+
+
+                        <div class="col-md-4">
+                            <select class="form-select">
+                                <option class="form-control" selected>--Select--</option>
+                                <option class="form-control"> Electronic</option>
+                                <option class="form-control">furniture</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <button class="btn-sm btn btn-primary btnpress"> <i
+                                    class="fa-solid fa-magnifying-glass"></i> </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xl-3 col-lg-4 col-md-6 col-12">
+                    <!-- BEGIN card -->
+                    <div class="card border-0">
+                        <div class="card-body">
+                            <div class="row mb-10px">
+                                <div class="col-md-12 col-12">
+                                    <div class="card-subtitle border-bottom pb-1">Electronic</div>
+                                    <h4 class="card-title card-title-fixed-size border-bottom mb-10px mt-10px">
+                                        Heading Starting Here </h4>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-4">
+                                    <div class="image">
+                                        <div class="image-inner">
+                                            <a class="example-image-link"
+                                                href="../ColorAssets/img/gallery/gallery-1.jpg" loading="lazy"
+                                                data-lightbox="example-set2"
+                                                data-title="Click the right half of the image to move forward.">
+                                                <img class="example-image"
+                                                    src="../ColorAssets/img/gallery/gallery-1.jpg" alt="image-1"
+                                                    loading="lazy" />
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="image">
+                                        <div class="image-inner">
+                                            <a class="example-image-link"
+                                                href="../ColorAssets/img/gallery/gallery-2.jpg" loading="lazy"
+                                                data-lightbox="example-set2"
+                                                data-title="Click the right half of the image to move forward.">
+                                                <img class="example-image"
+                                                    src="../ColorAssets/img/gallery/gallery-2.jpg" alt="image-1"
+                                                    loading="lazy" />
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="image">
+                                        <div class="image-inner">
+                                            <a class="example-image-link"
+                                                href="../ColorAssets/img/gallery/gallery-3.jpg" loading="lazy"
+                                                data-lightbox="example-set2"
+                                                data-title="Click the right half of the image to move forward.">
+                                                <img class="example-image"
+                                                    src="../ColorAssets/img/gallery/gallery-3.jpg" loading="lazy"
+                                                    alt="image-1" />
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <hr class="mt-0">
+                            <p class="card-text card-text-fixed"> We are looking to hire an expert <span class="fw-800">
+                                    Job opening For SAP FICO - Immediate joiners</span> to join our diverse
+                                Team in Wakad.
+                            </p>
+
+                        </div>
+
+                        <div class="card-footer">
+                            <div class="row mb-10px">
+                                <div class="col-md-12">
+                                    <h5 class="card-subtitle mt-5px">
+                                        <i class="fa-solid fa-indian-rupee-sign me-20px"></i>
+                                        5000
+                                    </h5>
+                                    <h4 class="card-subtitle mt-10px">
+                                        <i class="fa-solid fa-phone-square me-10px"></i>
+                                        9988776644
+                                    </h4>
+                                    <h6 class="card-subtitle mt-10px">
+                                        <i class="fa-solid fa-user me-10px"></i>
+                                        Dheerendra Kumar Joshi
+                                    </h6>
+                                    <hr>
+                                    <h6 class="card-subtitle d-flex justify-content-between mt-10px">
+                                        <div class="text-start">
+                                            <div>Posted Date</div>
+                                            <i class="fa-regular fa-calendar-check"></i>
+                                            30/11/2023
+                                        </div>
+                                        <div class="text-end">
+                                            <div>Experied Date</div>
+                                            <i class="fa-regular fa-calendar-xmark"></i>
+                                            30/11/2023
+                                        </div>
+                                    </h6>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- END card -->
+                </div>
+
+                <div class="col-xl-3 col-lg-4 col-md-6 col-12">
+                    <!-- BEGIN card -->
+                    <div class="card border-0">
+                        <div class="card-body">
+                            <div class="row mb-10px">
+                                <div class="col-md-12 col-12">
+                                    <div class="card-subtitle border-bottom pb-1">Electronic</div>
+                                    <h4 class="card-title card-title-fixed-size border-bottom mb-10px mt-10px">
+                                        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Vero harum laudantium
+                                        et ab provident dolorem ullam obcaecati tempore? </h4>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-4">
+                                    <div class="image">
+                                        <div class="image-inner">
+                                            <a class="example-image-link"
+                                                href="../ColorAssets/img/gallery/gallery-1.jpg" loading="lazy"
+                                                data-lightbox="example-set"
+                                                data-title="Click the right half of the image to move forward.">
+                                                <img class="example-image"
+                                                    src="../ColorAssets/img/gallery/gallery-1.jpg" alt="image-1"
+                                                    loading="lazy" />
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="image">
+                                        <div class="image-inner">
+                                            <a class="example-image-link"
+                                                href="../ColorAssets/img/gallery/gallery-2.jpg" loading="lazy"
+                                                data-lightbox="example-set"
+                                                data-title="Click the right half of the image to move forward.">
+                                                <img class="example-image"
+                                                    src="../ColorAssets/img/gallery/gallery-2.jpg" alt="image-1"
+                                                    loading="lazy" />
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="image">
+                                        <div class="image-inner">
+                                            <a class="example-image-link"
+                                                href="../ColorAssets/img/gallery/gallery-4.jpg" loading="lazy"
+                                                data-lightbox="example-set"
+                                                data-title="Click the right half of the image to move forward.">
+                                                <img class="example-image"
+                                                    src="../ColorAssets/img/gallery/gallery-4.jpg" loading="lazy"
+                                                    alt="image-1" />
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <hr class="mt-0">
+                            <p class="card-text card-text-fixed"> Lorem, ipsum dolor sit amet consectetur adipisicing
+                                elit. Laudantium pariatur cupiditate, incidunt suscipit eum fuga. Accusantium dolor
+                                repellat non aliquid eum. Veniam tenetur neque, expedita debitis beatae voluptates non
+                                pariatur aperiam veritatis ea itaque, eum atque. Numquam, cupiditate! Minima
+                                consequatur, fuga molestias fugit modi nulla sed possimus provident illum esse!
+                            </p>
+
+                        </div>
+
+                        <div class="card-footer">
+                            <div class="row mb-10px">
+                                <div class="col-md-12">
+                                    <h5 class="card-subtitle mt-5px">
+                                        <i class="fa-solid fa-indian-rupee-sign me-20px"></i>
+                                        5000
+                                    </h5>
+                                    <h4 class="card-subtitle mt-10px">
+                                        <i class="fa-solid fa-phone-square me-10px"></i>
+                                        9988776644
+                                    </h4>
+                                    <h6 class="card-subtitle mt-10px">
+                                        <i class="fa-solid fa-user me-20px"></i>
+                                        Dheerendra Kumar Joshi
+                                    </h6>
+                                    <hr>
+                                    <h6 class="card-subtitle d-flex justify-content-between mt-10px">
+                                        <div class="text-start">
+                                            <div>Posted Date</div>
+                                            <i class="fa-regular fa-calendar-check"></i>
+                                            30/11/2023
+                                        </div>
+                                        <div class="text-end">
+                                            <div>Experied Date</div>
+                                            <i class="fa-regular fa-calendar-xmark"></i>
+                                            30/11/2023
+                                        </div>
+                                    </h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- END card -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- BEGIN scroll-top-btn -->
+    <a href="javascript:;" class="btn btn-icon btn-circle btn-success btn-scroll-to-top" data-toggle="scroll-to-top"><i
+            class="fa fa-angle-up"></i></a>
+    <!-- END scroll-top-btn -->
+    </div>
+    <!-- END #app -->
+
+    <!-- ================== BEGIN core-js ================== -->
+    <script src="/ColorAssets/js/app.min.js"></script>
+    <script src="/ColorAssets/js/vendor.min.js"></script>
+    <!-- ================== END core-js ================== -->
+    <!-- ================== BEGIN page-js ================== -->
+    <script src="/ColorAssets/plugins/bootstrap-datepicker/dist/js/bootstrap-datepicker.js"></script>
+    <script src="/ColorAssets/js/demo/dashboard.js"></script>
+    <!-- ================== END page-js ================== -->
+
+    <script>
+        lightbox.option({
+            'resizeDuration': 500,
+            'wrapAround': true,
+        })
+    </script>
+
+</body>
+
+</html>
